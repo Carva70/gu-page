@@ -13,7 +13,7 @@ export default function GUCardList({ cardList }) {
     for (var i in cardList) {
         displayList.push(
             
-            <Card key={i} bg="dark">
+            <Card key={i} bg="dark" style={{ "border-width": "0px" }}>
                 <composited-card
                     protoId={cardList[i].protoId}
                     quality={cardList[i].quality}
