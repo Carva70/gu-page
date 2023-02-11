@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container'
 import BNav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 
-export default function Nav({ price, onClickNavItem }) {
+export default function Nav({ price }) {
   return (
     <div>
       <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
@@ -12,9 +12,9 @@ export default function Nav({ price, onClickNavItem }) {
           <Navbar.Toggle aria-controls='responsive-navbar-nav' />
           <Navbar.Collapse id='responsive-navbar-nav'>
             <BNav className='me-auto'>
-              <BNav.Link onClick={() => onClickNavItem('fragment')}>Fragment Calculator</BNav.Link>
-              <BNav.Link onClick={() => onClickNavItem('payback')}>Payback Calculator</BNav.Link>
-              <BNav.Link onClick={() => onClickNavItem('search')}>Search Card</BNav.Link>
+              <BNav.Link href='/fragment'>Fragment Calculator</BNav.Link>
+              <BNav.Link href='/payback'>Payback Calculator</BNav.Link>
+              <BNav.Link href='/search'>Search Card</BNav.Link>
             </BNav>
             <BNav className='justify-content-end'>
               <BNav.Link className='justify-content-end' eventKey='disabled' disabled>
