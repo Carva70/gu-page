@@ -120,6 +120,7 @@ export default function Search() {
                   ['wander', 'Winter Wanderlands'],
                   ['etherbots', 'Etherbots'],
                   ['promo', 'Promo'],
+                  ['mythic', 'Mythic'],
                 ].map((e, i) => (
                   <option key={i} value={e[0]}>
                     {e[1]}
