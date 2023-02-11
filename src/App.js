@@ -27,7 +27,7 @@ function App() {
 
   return (
     <div>
-      <Nav price={price.toFixed(6)} onClickNavItem={handler} />
+      <Nav price={parseFloat(price.toFixed(6))} onClickNavItem={handler} />
       <div>{displayPage[page]}</div>
     </div>
   )

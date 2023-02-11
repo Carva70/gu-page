@@ -13,7 +13,7 @@ export default function Fragment() {
   const [reward, setReward] = useState(0)
   const [rowColor, setRowColor] = useState([...Array(10)].map(() => validTextColor.slice()))
 
-  var headerList = [
+  let headerList = [
     'Game',
     'Wins',
     'Rank',
@@ -23,8 +23,8 @@ export default function Fragment() {
     'Meteorite Cards',
     'Fragments',
   ]
-  var headerRow = []
-  var data = {
+  let headerRow = []
+  let data = {
     Mythic: 0.915,
     'Ethereal Diamond': 0.745,
     'Solar Gold': 0.575,
@@ -38,42 +38,42 @@ export default function Fragment() {
     'Purified Bronze': 0.065,
     'Rusted Bronze': 0.05,
   }
-  var ranks = Object.keys(data)
+  let ranks = Object.keys(data)
 
   for (let i in headerList) {
     headerRow.push(<th key={i}>{headerList[i]}</th>)
   }
 
   function handlerSelect(e) {
-    var copyDeck = deck.slice()
-    var i = e.target.id.slice(4, e.target.id.length)
+    let copyDeck = deck.slice()
+    let i = e.target.id.slice(4, e.target.id.length)
     copyDeck[i][1] = e.target.value
     setDeck(copyDeck)
     handler()
   }
 
   function handlerCheckbox(e) {
-    var copyDeck = deck.slice()
-    var i = e.target.id.slice(3, e.target.id.length)
+    let copyDeck = deck.slice()
+    let i = e.target.id.slice(3, e.target.id.length)
     copyDeck[i][0] = e.target.checked
     setDeck(copyDeck)
     handler()
   }
 
   function handlerNumber(e, j) {
-    var copyDeck = deck.slice()
-    var i = e.target.id.slice(4, e.target.id.length)
+    let copyDeck = deck.slice()
+    let i = e.target.id.slice(4, e.target.id.length)
     copyDeck[i][j] = parseInt(e.target.value)
     setDeck(copyDeck)
     handler()
   }
 
   function handler() {
-    var copyDeck = deck.slice()
-    var copyRowColor = rowColor.slice()
+    let copyDeck = deck.slice()
+    let copyRowColor = rowColor.slice()
     for (let i = 0; i < 10; i++) {
       const [win, rank, diamond, gold, shadow, meteorite] = copyDeck[i]
-      var result = 0
+      let result = 0
 
       if (
         diamond + gold + shadow + meteorite > 30 ||
@@ -88,17 +88,17 @@ export default function Fragment() {
       }
 
       if (win == true) {
-        var rankValue = data[rank]
-        var winStreak = 0
+        let rankValue = data[rank]
+        let winStreak = 0
         if (i > 0) {
           if (win && deck[i - 1][0]) {
             winStreak = 0.09
           }
         }
 
-        var cardValue = (diamond * 125 + gold * 25 + shadow * 5 + meteorite) / 3750
+        let cardValue = (diamond * 125 + gold * 25 + shadow * 5 + meteorite) / 3750
 
-        var minQualityBoost
+        let minQualityBoost
 
         if (diamond + gold + shadow + meteorite < 30) minQualityBoost = 0
         else if (diamond == 30) minQualityBoost = 1
@@ -106,9 +106,9 @@ export default function Fragment() {
         else if (diamond + gold + shadow == 30) minQualityBoost = 0.2
         else if (diamond + gold + shadow + meteorite == 30) minQualityBoost = 0.15
 
-        var deckTotal = cardValue * (1 - minQualityBoost) + minQualityBoost
+        let deckTotal = cardValue * (1 - minQualityBoost) + minQualityBoost
 
-        var resultList = copyDeck.map((x) => x[6])
+        let resultList = copyDeck.map((x) => x[6])
 
         if (i < 3) {
           result = 100 * (rankValue + winStreak + deckTotal) * 2
@@ -127,7 +127,7 @@ export default function Fragment() {
     setReward((totalFragments * daily * 1000) / (comFragments * 1000000))
   }
 
-  var rows = []
+  let rows = []
   for (let i = 0; i < 10; i++) {
     rows.push(
       <tr key={i}>
