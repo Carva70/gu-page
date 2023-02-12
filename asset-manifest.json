@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/gu-page/static/css/main.8d6a17ca.css",
-    "main.js": "/gu-page/static/js/main.d4aa8d4d.js",
+    "main.js": "/gu-page/static/js/main.8d4d2e0b.js",
     "index.html": "/gu-page/index.html",
     "main.8d6a17ca.css.map": "/gu-page/static/css/main.8d6a17ca.css.map",
-    "main.d4aa8d4d.js.map": "/gu-page/static/js/main.d4aa8d4d.js.map"
+    "main.8d4d2e0b.js.map": "/gu-page/static/js/main.8d4d2e0b.js.map"
   },
   "entrypoints": [
     "static/css/main.8d6a17ca.css",
-    "static/js/main.d4aa8d4d.js"
+    "static/js/main.8d4d2e0b.js"
   ]
 }
