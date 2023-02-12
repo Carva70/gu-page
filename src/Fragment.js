@@ -13,7 +13,7 @@ export default function Fragment() {
   const [reward, setReward] = useState(0)
   const [rowColor, setRowColor] = useState([...Array(10)].map(() => validTextColor.slice()))
 
-  let headerList = [
+  const headerList = [
     'Game',
     'Wins',
     'Rank',
@@ -24,7 +24,7 @@ export default function Fragment() {
     'Fragments',
   ]
   let headerRow = []
-  let data = {
+  const data = {
     Mythic: 0.915,
     'Ethereal Diamond': 0.745,
     'Solar Gold': 0.575,

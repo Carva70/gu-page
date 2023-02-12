@@ -9,7 +9,27 @@ import GUCardList from './GUCardList'
 import Alert from 'react-bootstrap/Alert'
 
 export default function Search() {
-  var sizes = '(min-width: 600px) 160px, 320px'
+  const sizes = '(min-width: 600px) 160px, 320px'
+  const qualities = ['Diamond', 'Gold', 'Shadow', 'Meteorite', 'Plain']
+  const gods = ['all', 'neutral', 'light', 'death', 'nature', 'war', 'magic', 'deception']
+  const tribes = ['all', 'nether', 'aether', 'atlantean', 'viking', 'olympian', 'anubian', 'amazon']
+  const rarities = ['all', 'common', 'rare', 'epic', 'legendary', 'mythic']
+  const types = ['creature', 'spell', 'weapon']
+  const sets = {
+    all: 'All',
+    welcome: 'Welcome',
+    core: 'Core',
+    genesis: 'Genesis',
+    trial: 'Trial of the Gods',
+    order: 'Divine Order',
+    mortal: 'Mortal Judgement',
+    verdict: "Light's Verdict",
+    wander: 'Winter Wanderlands',
+    etherbots: 'Etherbots',
+    promo: 'Promo',
+    mythic: 'Mythic',
+  }
+
   const [showAlert, setShowAlert] = useState(true)
   const [cardList, setCardList] = useState([])
   const [search, setSearch] = useState('')
@@ -21,6 +41,15 @@ export default function Search() {
   const [tribe, setTribe] = useState(0)
   const [mana, setMana] = useState(0)
   const [type, setType] = useState(0)
+
+  const textFilter = (card) =>
+    card.name.toLowerCase().includes(search.toLowerCase()) &&
+    (god == 0 || god == 'all' || card.god == god) &&
+    (set == 0 || set == 'all' || card.set == set) &&
+    (rarity == 0 || rarity == 'all' || card.rarity == rarity) &&
+    (tribe == 0 || tribe == 'all' || card.tribe['String'] == tribe) &&
+    (type == 0 || type == 'all' || card.type == type) &&
+    (mana == 0 || mana == 'all' || card.mana == mana || (mana == 10 && card.mana > 10))
 
   var pageUrl = 'https://api.godsunchained.com/v0/proto?perPage=10'
   var allCardsUrl = 'https://api.godsunchained.com/v0/proto?perPage=1550'
@@ -70,12 +99,12 @@ export default function Search() {
                 className='bg-dark text-light'
                 value={quality}
                 onChange={(e) => setQuality(parseInt(e.target.value))}
-                isInvalid={quality == 0}
+                isInvalid={quality === 0}
               >
                 <option disabled value={0}>
                   Quality
                 </option>
-                {['Diamond', 'Gold', 'Shadow', 'Meteorite', 'Plain'].map((e, i) => (
+                {qualities.map((e, i) => (
                   <option key={i} value={1 + i}>
                     {e}
                   </option>
@@ -90,13 +119,11 @@ export default function Search() {
                 <option disabled value={0}>
                   God
                 </option>
-                {['all', 'neutral', 'light', 'death', 'nature', 'war', 'magic', 'deception'].map(
-                  (e, i) => (
-                    <option key={i} value={e}>
-                      {e.charAt(0).toUpperCase() + e.slice(1)}
-                    </option>
-                  ),
-                )}
+                {gods.map((e, i) => (
+                  <option key={i} value={e}>
+                    {e.charAt(0).toUpperCase() + e.slice(1)}
+                  </option>
+                ))}
               </Form.Select>
               <Form.Label visuallyHidden>asdf</Form.Label>
               <Form.Select
@@ -108,22 +135,9 @@ export default function Search() {
                 <option disabled value={0}>
                   Set
                 </option>
-                {[
-                  ['all', 'All'],
-                  ['welcome', 'Welcome'],
-                  ['core', 'Core'],
-                  ['genesis', 'Genesis'],
-                  ['trial', 'Trial of the Gods'],
-                  ['order', 'Divine Order'],
-                  ['mortal', 'Mortal Judgement'],
-                  ['verdict', "Light's Verdict"],
-                  ['wander', 'Winter Wanderlands'],
-                  ['etherbots', 'Etherbots'],
-                  ['promo', 'Promo'],
-                  ['mythic', 'Mythic'],
-                ].map((e, i) => (
-                  <option key={i} value={e[0]}>
-                    {e[1]}
+                {Object.keys(sets).map((setItem, i) => (
+                  <option key={i} value={setItem}>
+                    {sets[setItem]}
                   </option>
                 ))}
               </Form.Select>
@@ -136,7 +150,7 @@ export default function Search() {
                 <option disabled value={0}>
                   Rarity
                 </option>
-                {['all', 'common', 'rare', 'epic', 'legendary', 'mythic'].map((e, i) => (
+                {rarities.map((e, i) => (
                   <option key={i} value={e}>
                     {e.charAt(0).toUpperCase() + e.slice(1)}
                   </option>
@@ -151,16 +165,7 @@ export default function Search() {
                 <option disabled value={0}>
                   Tribe
                 </option>
-                {[
-                  'all',
-                  'nether',
-                  'aether',
-                  'atlantean',
-                  'viking',
-                  'olympian',
-                  'anubian',
-                  'amazon',
-                ].map((e, i) => (
+                {tribes.map((e, i) => (
                   <option key={i} value={e}>
                     {e.charAt(0).toUpperCase() + e.slice(1)}
                   </option>
@@ -201,7 +206,7 @@ export default function Search() {
                 <option key={4} value={'all'}>
                   All
                 </option>
-                {['creature', 'spell', 'weapon'].map((e, i) => (
+                {types.map((e, i) => (
                   <option key={i} value={e}>
                     {e.charAt(0).toUpperCase() + e.slice(1)}
                   </option>
@@ -235,17 +240,7 @@ export default function Search() {
             }}
           >
             {allCards
-              .filter((e) => {
-                return (
-                  e.name.toLowerCase().includes(search.toLowerCase()) &&
-                  (god == 0 || god == 'all' || e.god == god) &&
-                  (set == 0 || set == 'all' || e.set == set) &&
-                  (rarity == 0 || rarity == 'all' || e.rarity == rarity) &&
-                  (tribe == 0 || tribe == 'all' || e.tribe['String'] == tribe) &&
-                  (type == 0 || type == 'all' || e.type == type) &&
-                  (mana == 0 || mana == 'all' || e.mana == mana || (mana == 10 && e.mana > 10))
-                )
-              })
+              .filter(textFilter)
               .slice(0, 30)
               .map((e, index) => (
                 <ListGroup.Item
