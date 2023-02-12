@@ -26,9 +26,9 @@ export default function Nav() {
           <Navbar.Toggle aria-controls='responsive-navbar-nav' />
           <Navbar.Collapse id='responsive-navbar-nav'>
             <BNav className='me-auto'>
-              <BNav.Link href='/fragment'>Fragment Calculator</BNav.Link>
-              <BNav.Link href='/payback'>Payback Calculator</BNav.Link>
-              <BNav.Link href='/search'>Search Card</BNav.Link>
+              <BNav.Link href='/#/fragment'>Fragment Calculator</BNav.Link>
+              <BNav.Link href='/#/payback'>Payback Calculator</BNav.Link>
+              <BNav.Link href='/#/search'>Search Card</BNav.Link>
             </BNav>
             <BNav className='justify-content-end'>
               <BNav.Link className='justify-content-end' eventKey='disabled' disabled>
