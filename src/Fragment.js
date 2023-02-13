@@ -278,7 +278,7 @@ export default function Fragment() {
   )
 
   return (
-    <Container className='mt-4'>
+    <Container className='mt-3'>
       <Table responsive bordered hover variant='dark'>
         <thead>
           <tr>{headerRow}</tr>

@@ -43,6 +43,7 @@ export default function Search() {
   const [mana, setMana] = useState(0)
   const [type, setType] = useState(0)
   const [showModal, setShowModal] = useState(false)
+  const [cardCont, setCardCont] = useState(0)
 
   const textFilter = (card) =>
     card.name.toLowerCase().includes(search.toLowerCase()) &&
@@ -75,8 +76,18 @@ export default function Search() {
       setShowModal(true)
       return
     }
-    copyList.push({ protoId: e.target.id, quality: quality, responsiveSrcsetSizes: sizes })
+    copyList.push({
+      protoId: e.target.id,
+      quality: quality,
+      responsiveSrcsetSizes: sizes,
+      id: cardCont,
+    })
+    setCardCont(cardCont + 1)
     setCardList(copyList)
+  }
+
+  function doubleClickHandler(e) {
+    setCardList(cardList.slice().filter((ele) => ele.id != e.target.id))
   }
 
   return (
@@ -92,13 +103,14 @@ export default function Search() {
       </Modal>
       <Row>
         <Col>
-          <Container>
+          <Container className='mt-3'>
             {showAlert && (
               <Alert variant='info' onClose={() => setShowAlert(false)} dismissible>
                 <Alert.Heading>How to Use</Alert.Heading>
                 <p>
                   To add a card, click on an item in the right list and select a quality. Use the
-                  filters above to search for specific cards.
+                  filters above to search for specific cards. Use <i>double click</i> to delete a
+                  card
                 </p>
               </Alert>
             )}
@@ -237,7 +249,7 @@ export default function Search() {
       </Row>
       <Row>
         <Col xs={8}>
-          <GUCardList cardList={cardList} />
+          <GUCardList cardList={cardList} doubleClickHandler={doubleClickHandler} />
         </Col>
         <Col>
           <ListGroup

@@ -19,7 +19,7 @@ const router = createHashRouter([
     element: <Payback />,
   },
   {
-    path: '/search',
+    path: '/builder',
     element: <Search />,
   },
 ])

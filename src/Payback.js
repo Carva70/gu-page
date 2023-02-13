@@ -33,7 +33,7 @@ export default function Payback() {
   }, [])
 
   return (
-    <Container className='mt-4'>
+    <Container className='mt-3'>
       {showAlert && (
         <Alert variant='info' onClose={() => setShowAlert(false)} dismissible>
           <Alert.Heading>Note</Alert.Heading>

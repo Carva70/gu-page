@@ -20,15 +20,18 @@ export default function Nav() {
   }, [])
   return (
     <div>
-      <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
+      <Navbar collapseOnSelect expand='lg' style={{ backgroundColor: '#151719' }} variant='dark'>
         <Container>
-          <Navbar.Brand href='/'>GU Calculator</Navbar.Brand>
+          <Navbar.Brand href='/'>
+            <img src='./logo.png' alt='My logo' width='30' height='30' />
+            GU Calculator
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls='responsive-navbar-nav' />
           <Navbar.Collapse id='responsive-navbar-nav'>
             <BNav className='me-auto'>
               <BNav.Link href='/gu-page/#/fragment'>Fragment Calculator</BNav.Link>
               <BNav.Link href='/gu-page/#/payback'>Payback Calculator</BNav.Link>
-              <BNav.Link href='/gu-page/#/search'>Search Card</BNav.Link>
+              <BNav.Link href='/gu-page/#/builder'>Deck Builder</BNav.Link>
             </BNav>
             <BNav className='justify-content-end'>
               <BNav.Link className='justify-content-end' eventKey='disabled' disabled>
