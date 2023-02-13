@@ -3,15 +3,25 @@ import PropTypes from 'prop-types'
 import { Card } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
 
-export default function GUCardList({ cardList }) {
+export default function GUCardList({ cardList, doubleClickHandler }) {
   return (
-    <Row xs={2} md={4} className='g-4'>
+    <Row xs={2} sm={2} xxl={4} xl={3} className='g-4'>
       {cardList.map((card, index) => (
-        <Card key={index} bg='dark' style={{ 'border-width': '0px' }}>
+        <Card
+          key={index}
+          bg='dark'
+          style={{ borderWidth: '0px' }}
+          onClick={(e) => {
+            if (e.detail == 2) {
+              doubleClickHandler(e)
+            }
+          }}
+        >
           <composited-card
             protoId={card.protoId}
             quality={card.quality}
             responsiveSrcsetSizes={card.responsiveSrcsetSizes}
+            id={card.id}
           ></composited-card>
         </Card>
       ))}
@@ -24,7 +34,9 @@ GUCardList.propTypes = {
     PropTypes.shape({
       protoId: PropTypes.string.isRequired,
       quality: PropTypes.number.isRequired,
-      responsiveSrcsetSizes: PropTypes.number.isRequired,
+      responsiveSrcsetSizes: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
     }),
   ).isRequired,
+  doubleClickHandler: PropTypes.func.isRequired,
 }

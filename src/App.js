@@ -3,9 +3,9 @@ import Fragment from './Fragment'
 import Payback from './Payback'
 import Search from './Search'
 
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+import { createHashRouter, RouterProvider, Navigate } from 'react-router-dom'
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <Navigate to='/fragment' />,
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     element: <Payback />,
   },
   {
-    path: '/search',
+    path: '/builder',
     element: <Search />,
   },
 ])

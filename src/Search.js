@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import 'composited-card'
-import { Card, InputGroup, Container, ListGroup } from 'react-bootstrap'
+import { Card, InputGroup, Container, ListGroup, Button } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import GUCardList from './GUCardList'
 import Alert from 'react-bootstrap/Alert'
+import Modal from 'react-bootstrap/Modal'
 
 export default function Search() {
   const sizes = '(min-width: 600px) 160px, 320px'
@@ -41,6 +42,8 @@ export default function Search() {
   const [tribe, setTribe] = useState(0)
   const [mana, setMana] = useState(0)
   const [type, setType] = useState(0)
+  const [showModal, setShowModal] = useState(false)
+  const [cardCont, setCardCont] = useState(0)
 
   const textFilter = (card) =>
     card.name.toLowerCase().includes(search.toLowerCase()) &&
@@ -70,23 +73,44 @@ export default function Search() {
   function listClickHandler(e) {
     var copyList = cardList.slice()
     if (quality == 0) {
+      setShowModal(true)
       return
     }
-    copyList.push({ protoId: e.target.id, quality: quality, responsiveSrcsetSizes: sizes })
+    copyList.push({
+      protoId: e.target.id,
+      quality: quality,
+      responsiveSrcsetSizes: sizes,
+      id: cardCont,
+    })
+    setCardCont(cardCont + 1)
     setCardList(copyList)
+  }
+
+  function doubleClickHandler(e) {
+    setCardList(cardList.slice().filter((ele) => ele.id != e.target.id))
   }
 
   return (
     <Container>
+      <Modal show={showModal}>
+        <Modal.Header>
+          <Modal.Title>Warning</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>You have to select a quality</Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => setShowModal(false)}>Close</Button>
+        </Modal.Footer>
+      </Modal>
       <Row>
         <Col>
-          <Container>
+          <Container className='mt-3'>
             {showAlert && (
               <Alert variant='info' onClose={() => setShowAlert(false)} dismissible>
-                <Alert.Heading>Usage</Alert.Heading>
+                <Alert.Heading>How to Use</Alert.Heading>
                 <p>
-                  Click on the list in the right to add a card, use the selection above to filter
-                  the cards in the list
+                  To add a card, click on an item in the right list and select a quality. Use the
+                  filters above to search for specific cards. Use <i>double click</i> to delete a
+                  card
                 </p>
               </Alert>
             )}
@@ -225,7 +249,7 @@ export default function Search() {
       </Row>
       <Row>
         <Col xs={8}>
-          <GUCardList cardList={cardList} />
+          <GUCardList cardList={cardList} doubleClickHandler={doubleClickHandler} />
         </Col>
         <Col>
           <ListGroup
@@ -236,7 +260,7 @@ export default function Search() {
               height: '80%',
               width: '30%',
               minWidth: '150px',
-              maxWidth: '300px',
+              maxWidth: '450px',
             }}
           >
             {allCards
