@@ -22,7 +22,7 @@ export default function Nav() {
     <div>
       <Navbar collapseOnSelect expand='lg' style={{ backgroundColor: '#151719' }} variant='dark'>
         <Container>
-          <Navbar.Brand href='/'>
+          <Navbar.Brand href='/gu-page'>
             <img src='./logo.png' alt='My logo' width='30' height='30' />
             GU Calculator
           </Navbar.Brand>
@@ -32,6 +32,7 @@ export default function Nav() {
               <BNav.Link href='/gu-page/#/fragment'>Fragment Calculator</BNav.Link>
               <BNav.Link href='/gu-page/#/payback'>Payback Calculator</BNav.Link>
               <BNav.Link href='/gu-page/#/builder'>Deck Builder</BNav.Link>
+              <BNav.Link href='/gu-page/#/stats'>Search Player Stats</BNav.Link>
             </BNav>
             <BNav className='justify-content-end'>
               <BNav.Link className='justify-content-end' eventKey='disabled' disabled>

@@ -10,7 +10,7 @@ export default function GUCardList({ cardList, doubleClickHandler }) {
         <Card
           key={index}
           bg='dark'
-          style={{ borderWidth: '0px' }}
+          style={{ borderWidth: '0px', cursor: 'no-drop' }}
           onClick={(e) => {
             if (e.detail == 2) {
               doubleClickHandler(e)
