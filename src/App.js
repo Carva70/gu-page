@@ -2,6 +2,7 @@ import Nav from './Nav'
 import Fragment from './Fragment'
 import Payback from './Payback'
 import Search from './Search'
+import Stats from './Stats'
 
 import { createHashRouter, RouterProvider, Navigate } from 'react-router-dom'
 
@@ -21,6 +22,10 @@ const router = createHashRouter([
   {
     path: '/builder',
     element: <Search />,
+  },
+  {
+    path: '/stats',
+    element: <Stats />,
   },
 ])
 

@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import 'composited-card'
-import { Card, InputGroup, Container, ListGroup, Button } from 'react-bootstrap'
+import { Card, InputGroup, Container, ListGroup, Button, Table } from 'react-bootstrap'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import GUCardList from './GUCardList'
 import Alert from 'react-bootstrap/Alert'
 import Modal from 'react-bootstrap/Modal'
+import Spinner from 'react-bootstrap/Spinner'
 
 export default function Search() {
   const sizes = '(min-width: 600px) 160px, 320px'
@@ -44,6 +45,7 @@ export default function Search() {
   const [type, setType] = useState(0)
   const [showModal, setShowModal] = useState(false)
   const [cardCont, setCardCont] = useState(0)
+  const [loading, setLoading] = useState(false)
 
   const textFilter = (card) =>
     card.name.toLowerCase().includes(search.toLowerCase()) &&
@@ -58,7 +60,9 @@ export default function Search() {
   var allCardsUrl = 'https://api.godsunchained.com/v0/proto?perPage=1550'
 
   useEffect(() => {
+    setLoading(true)
     axios.get(allCardsUrl).then((res) => {
+      setLoading(false)
       setAllCards(res.data.records)
     })
   }, [allCardsUrl, pageUrl])
@@ -90,8 +94,27 @@ export default function Search() {
     setCardList(cardList.slice().filter((ele) => ele.id != e.target.id))
   }
 
+  function getMana(mana) {
+    return cardList
+      .map((e) => {
+        return allCards.filter((c) => c.id == e.protoId)[0].mana
+      })
+      .filter((x) => (mana == 7 ? x >= 7 : x == mana)).length
+  }
+
   return (
     <Container>
+      <Container className='mt-3'>
+        {showAlert && (
+          <Alert variant='info' onClose={() => setShowAlert(false)} dismissible>
+            <Alert.Heading>How to Use</Alert.Heading>
+            <p>
+              To add a card, click on an item in the right list and select a quality. Use the
+              filters above to search for specific cards. Use <i>double click</i> to delete a card
+            </p>
+          </Alert>
+        )}
+      </Container>
       <Modal show={showModal}>
         <Modal.Header>
           <Modal.Title>Warning</Modal.Title>
@@ -102,20 +125,35 @@ export default function Search() {
         </Modal.Footer>
       </Modal>
       <Row>
-        <Col>
-          <Container className='mt-3'>
-            {showAlert && (
-              <Alert variant='info' onClose={() => setShowAlert(false)} dismissible>
-                <Alert.Heading>How to Use</Alert.Heading>
-                <p>
-                  To add a card, click on an item in the right list and select a quality. Use the
-                  filters above to search for specific cards. Use <i>double click</i> to delete a
-                  card
-                </p>
-              </Alert>
-            )}
-          </Container>
-
+        <Col className='mt-3'>
+          <Table responsive bordered hover variant='dark'>
+            <thead>
+              <tr>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+                <th>+7</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{getMana(1)}</td>
+                <td>{getMana(2)}</td>
+                <td>{getMana(3)}</td>
+                <td>{getMana(4)}</td>
+                <td>{getMana(5)}</td>
+                <td>{getMana(6)}</td>
+                <td>{getMana(7)}</td>
+                <td>{cardList.length}</td>
+              </tr>
+            </tbody>
+          </Table>
+        </Col>
+        <Col xs={9}>
           <Form>
             <InputGroup className='my-3 mb-3 text-light'>
               <Form.Select
@@ -257,62 +295,66 @@ export default function Search() {
             style={{
               position: 'absolute',
               overflowY: 'scroll',
-              height: '80%',
+              height: '70%',
               width: '30%',
               minWidth: '150px',
               maxWidth: '450px',
             }}
           >
-            {allCards
-              .filter(textFilter)
-              .slice(0, 30)
-              .map((e, index) => (
-                <ListGroup.Item
-                  key={index}
-                  className='bg-dark w-100'
-                  action
-                  id={e.id}
-                  onClick={(e) => listClickHandler(e)}
-                >
-                  <Card id={e.id} style={{ borderWidth: '0px', backgroundColor: '#ccc' }}>
-                    <Card.Body id={e.id}>
-                      <Card.Title id={e.id}>{e.name}</Card.Title>
-                      <Row md='1' xs='3' id={e.id}>
-                        <Col style={{ width: '65px' }} id={e.id}>
-                          {e.mana != '' ? (
-                            <Card id={e.id} className='bg-warning' style={{ borderWidth: '0px' }}>
-                              {' '}
-                              ⚡️ {e.mana}
-                            </Card>
-                          ) : (
-                            ''
-                          )}
-                        </Col>
-                        <Col style={{ width: '65px' }} id={e.id}>
-                          {e.attack.Valid ? (
-                            <Card id={e.id} className='bg-danger' style={{ borderWidth: '0px' }}>
-                              {' '}
-                              ⚔ {e.attack.Int64}
-                            </Card>
-                          ) : (
-                            ''
-                          )}
-                        </Col>
-                        <Col style={{ width: '65px' }} id={e.id}>
-                          {e.health.Valid ? (
-                            <Card id={e.id} className='bg-success' style={{ borderWidth: '0px' }}>
-                              {' '}
-                              🛡️ {e.health.Int64}
-                            </Card>
-                          ) : (
-                            ''
-                          )}
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
-                </ListGroup.Item>
-              ))}
+            {!loading ? (
+              allCards
+                .filter(textFilter)
+                .slice(0, 30)
+                .map((e, index) => (
+                  <ListGroup.Item
+                    key={index}
+                    className='bg-dark w-100'
+                    action
+                    id={e.id}
+                    onClick={(e) => listClickHandler(e)}
+                  >
+                    <Card id={e.id} style={{ borderWidth: '0px', backgroundColor: '#ccc' }}>
+                      <Card.Body id={e.id}>
+                        <Card.Title id={e.id}>{e.name}</Card.Title>
+                        <Row md='1' xs='3' id={e.id}>
+                          <Col style={{ width: '65px' }} id={e.id}>
+                            {e.mana != '' ? (
+                              <Card id={e.id} className='bg-warning' style={{ borderWidth: '0px' }}>
+                                {' '}
+                                ⚡️ {e.mana}
+                              </Card>
+                            ) : (
+                              ''
+                            )}
+                          </Col>
+                          <Col style={{ width: '65px' }} id={e.id}>
+                            {e.attack.Valid ? (
+                              <Card id={e.id} className='bg-danger' style={{ borderWidth: '0px' }}>
+                                {' '}
+                                ⚔ {e.attack.Int64}
+                              </Card>
+                            ) : (
+                              ''
+                            )}
+                          </Col>
+                          <Col style={{ width: '65px' }} id={e.id}>
+                            {e.health.Valid ? (
+                              <Card id={e.id} className='bg-success' style={{ borderWidth: '0px' }}>
+                                {' '}
+                                🛡️ {e.health.Int64}
+                              </Card>
+                            ) : (
+                              ''
+                            )}
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                  </ListGroup.Item>
+                ))
+            ) : (
+              <Spinner animation='border' role='status' className='text-light'></Spinner>
+            )}
           </ListGroup>
         </Col>
       </Row>

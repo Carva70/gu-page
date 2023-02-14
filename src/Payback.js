@@ -64,9 +64,11 @@ export default function Payback() {
                   style={{ color: 'white', border: '0px' }}
                   value={cardPriceUSD[i]}
                   onChange={(e) => {
-                    let copyPriceUSD = cardPriceUSD.slice()
-                    copyPriceUSD[i] = parseFloat(e.target.value)
-                    setCardPriceUSD(copyPriceUSD)
+                    if (parseFloat(e.target.value) >= 0) {
+                      let copyPriceUSD = cardPriceUSD.slice()
+                      copyPriceUSD[i] = parseFloat(e.target.value)
+                      setCardPriceUSD(copyPriceUSD)
+                    }
                   }}
                 ></Form.Control>
               </td>
